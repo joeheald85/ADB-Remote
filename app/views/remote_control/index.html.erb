@@ -1,0 +1,77 @@
+<div>
+  <div>
+    <%= label_tag 'ip_address', 'Device IP Address' %><br/>
+    <%= text_field_tag 'ip_address', session[:device_ip] %>
+  </div>
+  
+  <%= link_to 'Take Screenshot', 'javascript:void(0);', :id => 'take_screenshot' %><br/>
+  
+  <div>
+    <%= link_to 'Trigger Click', 'javascript:void(0);', :id => 'trigger_click' %>
+    <%= text_field_tag 'click_x' %><%= text_field_tag 'click_y' %>
+  </div>
+  <div>
+    <%= link_to 'Trigger Button', 'javascript:void(0);', :id => 'trigger_button' %>
+    <%= select_tag 'button', options_for_select(AdbHandler.button_codes.keys) %>
+  </div>
+  <div>
+    <%= link_to 'Launch App', 'javascript:void(0);', :id => 'launch_app' %>
+    <%= select_tag 'app_name', options_for_select(AdbHandler.app_list.keys) %>
+  </div>
+  <div>
+    <%= link_to 'Watch Channel', 'javascript:void(0);', :id => 'watch_channel' %>
+    <%= select_tag 'channel', options_for_select(AdbHandler.watch_channel_event_values.keys) %>
+    <%= check_box_tag 'watching' %><%= label_tag 'Already Watching?' %>
+  </div>
+</div>
+
+<div id="screenshot_container">
+  
+</div>
+
+
+<script>
+  $('#take_screenshot').on('click', function(){
+    $.ajax('/remote_control/take_screenshot', {
+      method: 'POST',
+      dataType: 'script',
+      data: {ip_address: $('#ip_address').val()},
+      complete: updateScreenshot
+    });
+  });
+  $('#trigger_click').on('click', function(){
+    $.ajax('/remote_control/trigger_click', {
+      method: 'POST',
+      dataType: 'script',
+      data: {ip_address: $('#ip_address').val(), click_x: $('#click_x').val(), click_y: $('#click_y').val()},
+      complete: updateScreenshot
+    });
+  });
+  $('#trigger_button').on('click', function(){
+    $.ajax('/remote_control/trigger_button', {
+      method: 'POST',
+      dataType: 'script',
+      data: {ip_address: $('#ip_address').val(), button: $('#button').val()},
+      complete: updateScreenshot
+    });
+  });
+  $('#launch_app').on('click', function(){
+    $.ajax('/remote_control/launch_app', {
+      method: 'POST',
+      dataType: 'script',
+      data: {ip_address: $('#ip_address').val(), app_name: $('#app_name').val()},
+      complete: updateScreenshot
+    });
+  });
+  $('#watch_channel').on('click', function(){
+    $.ajax('/remote_control/watch_channel', {
+      method: 'POST',
+      dataType: 'script',
+      data: {ip_address: $('#ip_address').val(), channel: $('#channel').val(), watching: $('#watching:checked').length},
+      complete: updateScreenshot
+    });
+  });
+  function updateScreenshot(data){
+    $('#screenshot_container').html('<img width="100%" src="/screenshot'+data.responseText+'.png"/>');
+  }
+</script>

@@ -1,0 +1,50 @@
+require 'opencv'
+include OpenCV
+
+image = IplImage.load('/Users/joe/Desktop/cake3.jpg')
+image2 = IplImage.load('/Users/joe/Desktop/cake4.jpg')
+
+templ_dims = image2.dims
+
+res = image.match_template(image2)
+res_dims = res.min_max_loc[2].to_a
+
+image.rectangle!(res.min_max_loc[2], CvPoint.new(res_dims[0] + templ_dims[1], res_dims[1] + templ_dims[0]), :color => CvColor::Red)
+
+window = GUI::Window.new('Display window') # Create a window for display.
+window.show(image) # Show our image inside it.
+GUI::wait_key
+
+
+
+
+require 'opencv'
+include OpenCV
+
+image = IplImage.load('/Users/joe/Desktop/heart.jpg')
+image2 = IplImage.load('/Users/joe/Desktop/cake4.jpg')
+
+templ_dims = image2.dims
+
+res = image.match_template(image2)
+res_dims = res.min_max_loc[2].to_a
+
+image.rectangle!(res.min_max_loc[2], CvPoint.new(res_dims[0] + templ_dims[1], res_dims[1] + templ_dims[0]), :color => CvColor::Red)
+
+window = GUI::Window.new('Display window') # Create a window for display.
+window.show(image) # Show our image inside it.
+GUI::wait_key
+
+
+adb kill-server
+adb start-server
+adb connect 192.168.0.15
+
+
+`adb shell input tap x y`
+
+adb shell screencap -p /sdcard/screen.png
+adb pull /sdcard/screen.png
+adb shell rm /sdcard/screen.png
+
+adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g' > screen.png
