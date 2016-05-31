@@ -1,6 +1,10 @@
 class TvGuideExtractor
   def self.get_html
-    html_data = open('http://www.tvguide.com/listings/').read
-    nokogiri_object = Nokogiri::HTML(html_data)
+    @browser = Watir::Browser.new :chrome
+    @browser.goto 'http://www.tvguide.com/listings/'
+    sleep 2
+    channels_ul = @browser.ul(:class => 'listings-grid').html
+    @browser.close
+    channels_ul
   end
 end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       post :trigger_button
       post :launch_app
       post :watch_channel
+      get :channel_guide
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

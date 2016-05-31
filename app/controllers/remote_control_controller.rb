@@ -1,6 +1,6 @@
 class RemoteControlController < ApplicationController
   before_filter :set_session_ip
-  around_filter :perform_with_handler, :except => [:index]
+  around_filter :perform_with_handler, :except => [:index, :channel_guide]
 
   def index
   end
@@ -26,6 +26,10 @@ class RemoteControlController < ApplicationController
     else
       @handler.watch_channel(params[:channel])
     end
+  end
+
+  def channel_guide
+    @guide_html = TvGuideExtractor.get_html
   end
 
   private

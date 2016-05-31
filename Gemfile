@@ -24,6 +24,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'ruby-opencv'
 gem 'nokogiri', '~> 1.6', '>= 1.6.7.2'
+gem 'watir-webdriver', '~> 0.9.1'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

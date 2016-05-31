@@ -1,0 +1,24 @@
+<div>
+  <div>
+    <%= label_tag 'ip_address', 'Device IP Address' %><br/>
+    <%= text_field_tag 'ip_address', session[:device_ip] %>
+  </div>
+  <div>
+    <%= check_box_tag 'watching' %><%= label_tag 'Already Watching?' %>
+  </div>
+</div>
+
+<%= @guide_html.html_safe %>
+
+<script>
+  $('.listings-channel-row').on('click', function(ev, el){
+    ev.preventDefault();
+    channel = $(this).data('channel-name');
+    $.ajax('/remote_control/watch_channel', {
+      method: 'POST',
+      dataType: 'script',
+      data: {ip_address: $('#ip_address').val(), channel: channel, watching: $('#watching:checked').length}
+    });
+    return false;
+  });
+</script>
