@@ -21,4 +21,6 @@
     });
     return false;
   });
+  $('[style^="width"]').each(function(){ $(this).css({width: $(this).width() - 1 }) });
+  $('.listings-ad-row, .listings-channel-franchise-bar, .listings-channel-row-franchise').remove();
 </script>

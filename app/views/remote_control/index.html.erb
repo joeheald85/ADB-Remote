@@ -23,6 +23,9 @@
     <%= select_tag 'channel', options_for_select(AdbHandler.watch_channel_event_values.keys) %>
     <%= check_box_tag 'watching' %><%= label_tag 'Already Watching?' %>
   </div>
+  <div>
+    <%= link_to 'Channel Guide', channel_guide_remote_control_index_path %>
+  </div>
 </div>
 
 <div id="screenshot_container">
