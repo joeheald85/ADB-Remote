@@ -7,8 +7,14 @@ class AdbHandler
 
   def initialize(ip_address="192.168.0.14")
     @ip_address = ip_address
+    reset_adb_client
     connect_adb
     @timestamp = Time.now.to_f.to_s.sub('.', '')
+  end
+
+  def reset_adb_client
+    `#{adb_path} kill-server`
+    `#{adb_path} start-server`
   end
 
   def connect_adb
@@ -59,10 +65,10 @@ class AdbHandler
     sleep(2)
     d,l,r = self.class.watch_channel_event_values[channel.downcase]
     batch_script = ""
-    d.times{ batch_script += "input keyevent #{self.class.button_codes["DOWN"]}\n" }
+    d.times{ batch_script += "sendevent /dev/input/event3 0004 0004 00070051\nsendevent /dev/input/event3 1 108 1\nsendevent /dev/input/event3 0 0 0\nsendevent /dev/input/event3 0004 0004 00070051\nsendevent /dev/input/event3 1 108 0\nsendevent /dev/input/event3 0 0 0\n" }
     l.times{ batch_script += "input keyevent #{self.class.button_codes["LEFT"]}\n" }
     r.times{ batch_script += "input keyevent #{self.class.button_codes["RIGHT"]}\n" }
-    batch_script += "input keyevent #{self.class.button_codes["CENTER"]}\n"
+    batch_script += "input keyevent #{self.class.button_codes["CENTER"]}\nexit\n"
     send_batch_script(batch_script)
   end
 
@@ -70,8 +76,8 @@ class AdbHandler
     3.times{ click_screen(1400,3) }
     sleep(2)
     batch_script = ""
-    self.class.change_channel_counts[channel.downcase].times{ batch_script += "input keyevent #{self.class.button_codes["DOWN"]}\n" }
-    batch_script += "input keyevent #{self.class.button_codes["CENTER"]}\n"
+    self.class.change_channel_counts[channel.downcase].times{ batch_script += "sendevent /dev/input/event3 0004 0004 00070051\nsendevent /dev/input/event3 1 108 1\nsendevent /dev/input/event3 0 0 0\nsendevent /dev/input/event3 0004 0004 00070051\nsendevent /dev/input/event3 1 108 0\nsendevent /dev/input/event3 0 0 0\n" }
+    batch_script += "input keyevent #{self.class.button_codes["CENTER"]}\nexit\n"
     send_batch_script(batch_script)
   end
 

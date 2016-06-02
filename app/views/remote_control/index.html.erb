@@ -20,7 +20,7 @@
   </div>
   <div>
     <%= link_to 'Watch Channel', 'javascript:void(0);', :id => 'watch_channel' %>
-    <%= select_tag 'channel', options_for_select(AdbHandler.watch_channel_event_values.keys) %>
+    <%= select_tag 'channel', options_for_select(AdbHandler.change_channel_counts.keys.map(&:titleize).map(&:upcase)) %>
     <%= check_box_tag 'watching' %><%= label_tag 'Already Watching?' %>
   </div>
   <div>
@@ -29,7 +29,6 @@
 </div>
 
 <div id="screenshot_container">
-  
 </div>
 
 
